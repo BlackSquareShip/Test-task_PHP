@@ -1,28 +1,38 @@
 <?php
-try {
-    $conn = new PDO("mysql:host=127.0.0.1;dbname=dbuser", "root", "");
-    echo "DB is connect <br/>";
+$conn = new PDO("mysql:host=127.0.0.1;dbname=dbuser", "root", "");
+include_once "index.php";
 
-    
-    class PeopleList
-    {
-        private $id;
 
-        public function  __construct($expression){
-            $column = "user_".$expression;
-            $conn = new PDO("mysql:host=127.0.0.1;dbname=dbuser", "root", "");
-            $sql = "SELECT * FROM `user` WHERE $column";
-            $people = $conn->query($sql);
-            
-            while($row = $people->fetch()){
-            echo $row['name'];
-            }
+class PeopleList
+{
+    private $id;
+
+    public function  __construct($expression){
+        $column = "user_".$expression;
+        $conn = new PDO("mysql:host=127.0.0.1;dbname=dbuser", "root", "");
+        $sql = "SELECT * FROM `user` WHERE $column";
+        $people = $conn->query($sql);
+        $searchId = array();
+        while($row = $people->fetch()){
+        $this->searchId[] = $row['user_id'];
         }
         
     }
 
-    $test = new PeopleList("id <> 18");
+    public function peopleById(){
+        $allPeople = array();
+        foreach($this->searchId as $value){
+            $allPeople[] = new DBPeople($value);
+        }
+        return $allPeople;
+    }
+
+    public function deletePeopleById(){
+        foreach($this->searchId as $value){
+            $people = new DBPeople($value);
+            $people->deletePeople();
+        }
+
+    }
     
-} catch(PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
 }
