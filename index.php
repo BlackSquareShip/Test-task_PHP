@@ -52,9 +52,9 @@ try {
         static function getGender($people){
             $gender = $people->gender;
             if ($gender == 0){
-                return "Male";
+                return 'Male';
             } else {
-                return "Female";
+                return 'Female';
             }
         } 
 
