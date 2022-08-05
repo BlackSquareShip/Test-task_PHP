@@ -36,9 +36,9 @@ try {
             $this->conn->exec($sql);
         }
 
-        public function deletePeople($id)
+        public function deletePeople()
         {
-            $sql = "DELETE FROM `user` WHERE `user_id` = $id";
+            $sql = "DELETE FROM `user` WHERE `user_id` = $this->id";
             $this->conn->exec($sql);
         }
 
@@ -79,7 +79,8 @@ try {
 
     };
 
-    $lil = new DBPeople(18);
+    $lil = new DBPeople(90);
+    $lil->deletePeople();
 
 
 } catch(PDOException $e) {
